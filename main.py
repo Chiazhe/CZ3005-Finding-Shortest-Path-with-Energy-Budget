@@ -82,6 +82,7 @@ def uniform_cost_search(source, destination):
         if pQueue.empty():
             print('Route not found between '+source+' and ' +
                   destination+" at energy budget ")
+            return []
 
         distance, route = pQueue.get()
         # currentNode is the current node we are at
