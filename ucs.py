@@ -2,8 +2,6 @@ import json
 from queue import PriorityQueue
 
 def uniform_cost_search(source, destination):
-    minimumDistance = 99999999999999999
-    ans=[]
     if source not in graph.keys():
         print("Source node: "+source+" is not found in the graph!")
         return []
@@ -22,10 +20,9 @@ def uniform_cost_search(source, destination):
     while pQueue:
         # No route exist between them in the case
         if pQueue.empty():
-            if len(ans) == 0:
-                print('Route not found between '+source+' and ' +
-                      destination+" at energy budget ")
-            return ans
+            print('Route not found between '+source+' and ' +
+                  destination+" at energy budget ")
+
         distance, route = pQueue.get()
         # currentNode is the current node we are at
         currentNode = route[len(route)-1]
@@ -36,14 +33,9 @@ def uniform_cost_search(source, destination):
             visited.add(currentNode)
 
             # Destination is Reached and Check if the path is larger than the minimum path as of now
-            if currentNode == destination and distance < minimumDistance:
-                print("found")
-                minimumDistance = distance
+            if currentNode == destination:
                 route.append(distance)
-                ans= route
-                visited.remove(currentNode)
-                continue
-                # return route
+                return route
 
             # Get the neighbors of current node
             neighbors = graph[currentNode]
@@ -60,6 +52,14 @@ def uniform_cost_search(source, destination):
                     # Add the distance and route for this neighbor for further explore later
                     pQueue.put((t_distance, temp))
 
+def print_result(result):
+    "->".join(result[:-2])
+    res= result[0]
+    for x in range(len(result)-1):
+        res = res+"->"+result[x] 
+    return result
+
+
 # main function
 if __name__ == '__main__':
     with open('G.json') as f1:
@@ -72,5 +72,5 @@ if __name__ == '__main__':
         costData = json.load(f3)
 
     answer = uniform_cost_search('1', '50')
-    print(len(answer))
-    print(answer)
+    print("Shortest path: " + "->".join(answer[:-1]))
+    print(answer[-1])
