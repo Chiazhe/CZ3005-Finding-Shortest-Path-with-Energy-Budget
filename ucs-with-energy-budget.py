@@ -1,11 +1,10 @@
 import json
-import sys
 from queue import PriorityQueue
 
 
 def uniform_cost_search(source, destination, energyLimit):
     minimumDistance = 99999999999999999
-    answer = []
+    ans=[]
     if source not in graph.keys():
         print("Source node: "+source+" is not found in the graph!")
         return []
@@ -24,10 +23,14 @@ def uniform_cost_search(source, destination, energyLimit):
     while pQueue:
         # No route exist between them in the case
         if pQueue.empty():
-            print('Route not found between '+source+' and ' +
-                  destination+" at energy budget " + str(energyLimit))
-            return answer
+            print(pQueue)
+            if len(ans) == 0:
+                print('Route not found between '+source+' and ' +
+                      destination+" at energy budget " + str(energyLimit))
+            return ans
+
         distance, energy, route = pQueue.get()
+
         # currentNode is the current node we are at
         currentNode = route[len(route)-1]
 
@@ -37,19 +40,22 @@ def uniform_cost_search(source, destination, energyLimit):
             visited.add(currentNode)
 
             # Check if the path is larger than the minimum path as of now
-            if distance > minimumDistance:
-                continue
+            # if distance > minimumDistance:
+            #     continue
 
             # Check if energy is more than the limit
-            if energy > energyLimit:
-                continue
+            # if energy > energyLimit:
+            #     continue
 
             # Destination is Reached
-            if currentNode == destination:
+            if currentNode == destination and energy <= energyLimit:
+                print("found")
                 minimumDistance = distance
                 route.append(distance)
                 route.append(energy)
-                answer.append(route)
+                ans= route
+                visited.remove(currentNode)
+                continue
                 # return route
 
             # Get the neighbors of current node
@@ -70,9 +76,6 @@ def uniform_cost_search(source, destination, energyLimit):
                     # Add the distance, energy and route for this neighbor for further explore later
                     pQueue.put((t_distance, t_energy, temp))
 
-    return answer
-
-
 # main function
 if __name__ == '__main__':
     with open('G.json') as f1:
@@ -84,6 +87,6 @@ if __name__ == '__main__':
     with open('Cost.json') as f3:
         energyData = json.load(f3)
 
-    answer = uniform_cost_search('1', '65412', 9999999999999)
+    answer = uniform_cost_search('1', '50', 287932)
     print(len(answer))
     print(answer)
