@@ -218,8 +218,9 @@ if __name__ == '__main__':
                 task1_end = input(
                     "Please only enter digit number. Try again.\nPlease enter the ending node in number:\n")
             answer =uniform_cost_search(task1_start,task1_end)
-            print("Shortest path: " + "->".join(answer[:-1]))
-            print("Shortest distance:", answer[-1])
+            if (len(answer)>0):
+                print("Shortest path: " + "->".join(answer[:-1]))
+                print("Shortest distance:", answer[-1])
             user_input = get_valid_number_input()
         elif int(user_input)==2:
             task2_start = input("Please enter the starting node in number:\n")
@@ -235,9 +236,10 @@ if __name__ == '__main__':
                 task2_energy = input(
                     "Please only enter digit number. Try again.\nPlease enter the energy limit in number:\n")
             answer = uniform_cost_search_with_energy_limit(task2_start,task2_end,int(task2_energy))
-            print("Shortest path: " + "->".join(answer[:-2]))
-            print("Shortest distance: " + str(answer[-2]))
-            print("Total energy cost: " + str(answer[-1]))
+            if (len(answer)>0):
+                print("Shortest path: " + "->".join(answer[:-2]))
+                print("Shortest distance: " + str(answer[-2]))
+                print("Total energy cost: " + str(answer[-1]))
             user_input = get_valid_number_input()
         elif int(user_input) == 3:
             task3_start = input("Please enter the starting node in number:\n")
