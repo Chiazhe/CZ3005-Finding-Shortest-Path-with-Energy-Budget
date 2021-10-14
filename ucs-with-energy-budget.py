@@ -18,7 +18,7 @@ def uniform_cost_search(source, destination, energyLimit):
 
     # Used to store the route in an increasing order of distance
     pQueue = PriorityQueue()
-    pQueue.put((0, 0, [source]))
+    pQueue.put((0,0, 0, [source]))
 
     while pQueue:
         # No route exist between them in the case
@@ -29,7 +29,7 @@ def uniform_cost_search(source, destination, energyLimit):
                       destination+" at energy budget " + str(energyLimit))
             return ans
 
-        distance, energy, route = pQueue.get()
+        compare_value,distance, energy, route = pQueue.get()
 
         # currentNode is the current node we are at
         currentNode = route[len(route)-1]
@@ -48,15 +48,15 @@ def uniform_cost_search(source, destination, energyLimit):
             #     continue
 
             # Destination is Reached
-            if currentNode == destination and energy <= energyLimit:
+            if currentNode == destination:
                 print("found")
                 minimumDistance = distance
                 route.append(distance)
                 route.append(energy)
                 ans= route
                 visited.remove(currentNode)
-                continue
-                # return route
+                # continue
+                return route
 
             # Get the neighbors of current node
             neighbors = graph[currentNode]
@@ -67,14 +67,14 @@ def uniform_cost_search(source, destination, energyLimit):
 
                     # Total Distance to this neighbor
                     t_distance = distData[currentNode+","+n] + distance
-
                     # Array of the previous route before reaching this neighbor
                     temp = route[:]
                     # Add in this neighbor into the route
                     temp.append(n)
 
                     # Add the distance, energy and route for this neighbor for further explore later
-                    pQueue.put((t_distance, t_energy, temp))
+                    if t_energy <= energyLimit:
+                        pQueue.put((t_distance+t_energy/10,t_distance, t_energy, temp))
 
 # main function
 if __name__ == '__main__':
